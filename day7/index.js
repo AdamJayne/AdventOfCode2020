@@ -11,18 +11,14 @@ const parseBag = (buildString) => {
   return [bagAttributes, parsedContents];
 }
 
-const checkIfContained = (bag, bagList, accumulation=0) => {
+const countNumberOfOuterBags = (bag, bagList, outerBags=[], accumulation=0) => {
 
   for (const [bagName, bagContents] of Object.entries(bagList)) {
     if (bagName !== bag && bagContents.length) {
       for (const bagValue of bagContents) {
-        if (bagValue.description === bag) {
-
-        }
-        if (bagValue.description === bag) {
-          console.log("contained")
-          console.log(accumulation)
-          accumulation += checkIfContained(bagName, bagList, 1);
+        if (bagValue.description === bag && !outerBags.includes(bagName)) {
+          outerBags.push(bagName);
+          accumulation = countNumberOfOuterBags(bagName, bagList, outerBags, accumulation + 1);
         }
       }
     }
@@ -32,10 +28,8 @@ const checkIfContained = (bag, bagList, accumulation=0) => {
 }
 
 const day7 = () => {
-  const puzzle = require('fs').readFileSync(__dirname + `/practice.txt`).toString().split('.\r\n');
+  const puzzle = require('fs').readFileSync(__dirname + `/puzzle.txt`).toString().split('.\n');
   const bagRules = {};
-  let outerCount = 0;
-  
   
   for (const entry of puzzle) {
     const [bagName, bagContents] = parseBag(entry);
@@ -43,14 +37,9 @@ const day7 = () => {
       bagRules[bagName] = bagContents;
     }
   }
-1
-  console.log(bagRules)
-
-  console.log(checkIfContained("shiny gold", bagRules));
-  
 
   const part1 = () => {
-    return 0;
+    return countNumberOfOuterBags("shiny gold", bagRules);
   }
   const part2 = () => {
     return 0;
