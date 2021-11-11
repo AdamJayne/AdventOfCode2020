@@ -7,4 +7,5 @@ ${require('./day4')()}
 ${require('./day5')()}
 ${require('./day6')()}
 ${require('./day7')()}
+${require('./day8')()}
 `)
